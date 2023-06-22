@@ -1,0 +1,59 @@
+<div style="margin-top: 100px;">
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
+      <a class="navbar-brand"  href="#" style="text-transform: uppercase;">Angular crud operation</a>
+      
+    
+      <nav class="navbar navbar-light bg-light">
+        <span class="navbar-text" style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
+          
+        </span>
+      </nav></nav></div>
+      <div style="text-align: center;margin-bottom: 60px;" >
+        <button
+        pButton
+        label="Add New Rule"
+        class="p-button- mb-2"
+        icon="pi pi-plus"
+        (click)="create()"
+      ></button>
+
+
+    </div>
+      <p-table [value]="bookarray" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}" >
+        <ng-template pTemplate="header">
+        <tr >
+         
+          <th scope="col">title</th>
+          <th scope="col">description</th>
+          <th scope="col">pageCount</th>
+          <th scope="col">publishDate</th>
+          <th scope="col">Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-data >
+        <tr >
+            <td>
+                {{ data.title }}
+            </td>
+            <td>{{ data.description }}</td>
+            <td>{{ data.pageCount }}</td>
+            <td>{{ data.publishDate }}</td>
+            <td> <button style="margin-right: 30px;"
+                pButton
+                label="Edit"
+                class="p-button- mb-2"
+                icon="pi pi-plus"
+                (click)="create()"
+              ></button>
+              <button
+              pButton
+              label="Delete"
+              class="p-button- mb-2"
+              icon="pi pi-plus"
+              (click)="deletedata(data.id)"
+            ></button>
+        </tr>
+    </ng-template>
+</p-table>
+
