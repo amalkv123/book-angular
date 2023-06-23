@@ -7,9 +7,10 @@ const routes: Routes = [
     path:'',component:AppComponent,children:[
 
       {path:"",redirectTo:"book",pathMatch:"full"},
-      
+
       {path:"book",loadChildren:()=>
-      import("./book/book.module").then(
+
+         import("./book/book.module").then(
         (m)=>m.BookModule
       )
     },

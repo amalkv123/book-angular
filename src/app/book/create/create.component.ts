@@ -3,7 +3,8 @@ import { map } from "rxjs/operators";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 import { Router, ActivatedRoute } from "@angular/router";
-import {  MenuItem, MessageService } from "primeng/api";
+import {  MenuItem,  } from "primeng/api";
+import { BookService } from 'src/app/book.service';
 
 
 @Component({
@@ -12,12 +13,28 @@ import {  MenuItem, MessageService } from "primeng/api";
   styleUrls: ['./create.component.scss']
 })
 export class CreateComponent {
+
+
+
+   title:any
+   description:any
+   pagecount:any   
+   excerpt:any
+   date!: Date; 
+   bookform!:FormGroup
+
+
+
+
+
+
+
   processing = false;
    title_btn_state = "Add";
    businessForm!: FormGroup;
    clients_list: any[] = [];
    submitted: boolean = false;
-   form_data: any = {};
+   form_data: any = {};      
    id = "";
    isAddMode: boolean = true;
    client_count: any = 0;
@@ -35,7 +52,8 @@ export class CreateComponent {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private messageService: MessageService,
+    private bookservice:BookService
+   
 
  ) { }
 
@@ -43,28 +61,15 @@ export class CreateComponent {
  ngOnInit(): void {
 
 
-  this.home = { icon: 'pi pi-home', routerLink: '/' };
 
-  this.items = [
-     {
-        label: "Settings",
-        url: "#/masters/clients/list",
-        target: '_self'
-     },
-     { label: 'Visa Application', routerLink: '/' },
-     { label: 'Business Rules ', routerLink: '/' },
-     { label: 'Add/Edit Business Rules ', routerLink: '/' },
-
-  ];
-
-  // Form builder initialization.
-  this.businessForm = this.formBuilder.group({
-     business_rule_key: [null],
-     code: [null, Validators.required],
+  this.bookform = this.formBuilder.group({
+     id: [null],
      title: [null, Validators.required],
      description: [null, Validators.required],
-     status: ["1", Validators.required],
-     rule_json: [{}, Validators.required]
+     pagecount: [null, Validators.required],
+     excerpt: [null, Validators.required],
+     date: [null, Validators.required],
+
 
   });
 
@@ -75,36 +80,30 @@ export class CreateComponent {
 
 
 
-  // this.countryService.getCountries().pipe(
-  //    map((resp:any) => {
-  //       this.dropdownCountry = resp["data"];
-  //    })
-  // ).subscribe();
-
   if (!this.isAddMode) {
      this.title_btn_state = "Update";
-     console.log("hjgf", this.title_btn_state)
+   //   console.log("hjgf", this.title_btn_state)
 
 
 
-    //  this.businessrulesService.getruleDetails(this.id).pipe(
-    //     map((resp: any) => {
-    //        this.form_data.business_rule_key = resp['payload'].business_rule_key;
-    //        this.form_data.code = resp['payload'].code;
-    //        this.form_data.title = resp['payload'].title;
-    //        this.form_data.description = resp['payload'].description;
-    //        this.form_data.status = resp['payload'].status;
-    //        this.businessForm.patchValue(this.form_data);
+     this.bookservice.getbooks(this.id).pipe(
+        map((resp: any) => {
+           this.form_data.id = resp.id;
+           this.form_data.title = resp.title;
+           this.form_data.description = resp.description;
+           this.form_data.excerpt = resp.excerpt;
+           this.form_data.pagecount = resp.pageCount;
+           this.form_data.date = new Date (resp.publishDate);
 
-    //        this.submitted = true;
-    //     })
-    //  ).subscribe();
+           this.bookform.patchValue(this.form_data);
 
-     let clientId = localStorage.getItem('client_id');
-     let clientName = localStorage.getItem('rule');
-
+           this.submitted = true;
+        })
+     ).subscribe();
 
      this.items.push();
+     this.title_btn_state = "Update";
+
   } else {
      this.title_btn_state = "Add";
      this.items.push();
@@ -112,11 +111,12 @@ export class CreateComponent {
 }
 
 // Returns fields of form.
+
+  
+
 get f() {
-  return this.businessForm.controls;
-}
-
-
+   return this.bookform.controls;
+ }
 
 
 
@@ -125,84 +125,30 @@ get f() {
 
 
 // Calls addClient or updateClient API based on the form.
-add_update_client() {
+createbook() {
+
   this.processing = true;
   this.submitted = true;
 
-  if (this.businessForm.invalid) {
+  if (this.bookform.invalid) {
      this.processing = false;
      return;
   }
 
-  let url = window.location.hash.slice(1);
-  //   console.log("url==>",url)
-  //   this.businessForm.get('rules_code')?.enable();
-
-
-  const url1 = this.router.url;
-  console.log("url is:", url1)
-  // if (this.businessForm.get('business_rule_key')?.value != null) & (url.includes('clone')){
 
 
 
 
 
+  if (this.bookform.get('id')?.value != null ) {
 
-  if (this.businessForm.get('business_rule_key')?.value != null ) {
-     if (url.includes('clone')) {
-        // console.log("inside clone")
-
-        // this.businessrulesService.getclone(this.id).pipe(
-        //    map((resp: any) => {
-        //       this.form_data.business_rule_key = resp['payload'].business_rule_key;
-        //       this.form_data.code = resp['payload'].code;
-        //       this.form_data.title = resp['payload'].title;
-        //       this.form_data.description = resp['payload'].description;
-        //       this.form_data.status = resp['payload'].status;
-        //       this.businessForm.patchValue(this.form_data);
-
-        //       this.submitted = true;
-        //    })
-        // ).subscribe();
-
-        let clientId = localStorage.getItem('client_id');
-        let clientName = localStorage.getItem('rule');
+        this.bookservice.updatebook(this.bookform.value,this.id).subscribe(response => {
+         this.router.navigate(['/book/list']);
 
 
-        this.items.push();
+        });
 
-        console.log("inside clone last")
-
-        console.log("amalm", this.businessForm.value)
-
-        // this.businessrulesService.updaterule(this.businessForm.value).subscribe(response => {
-        //    this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Business Details updated successfully' });
-        //    this.processing = false;
-        //    this.router.navigate(['/masters/projects/businesslist']);
-
-        // }, error => {
-        //    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.errors[0] });
-        //    this.processing = false;
-        // });
-
-        // this.router.navigate(['/masters/projects/businesslist']);
-
-     }
-
-     else {
-        // console.log("amalm", this.businessForm.value)
-
-        // this.businessrulesService.updaterule(this.businessForm.value).subscribe(response => {
-        //    this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Business Details updated successfully' });
-        //    this.processing = false;
-        //    this.router.navigate(['/masters/projects/businesslist']);
-
-        // }, error => {
-        //    this.messageService.add({ severity: 'error', summary: 'Error', detail: error.error.errors[0] });
-        //    this.processing = false;
-        // });
-
-     }
+     
   }
 
 
@@ -210,36 +156,21 @@ add_update_client() {
 
 
 
-    //  this.businessrulesService.addrules(this.businessForm.value).subscribe(response => {
-    //     this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Business details added successfully' });
-    //     this.processing = false;
-
-    //     this.businessForm.controls["c_key"].setValue(response.payload._key);
-    //     //   this.title_btn_state = "Update";
-
-    //     this.router.navigate(['/masters/projects/businesslist']);
-
-    //  }
-
-    //  );
-
-    //  this.router.navigate(['/masters/projects/businesslist']);
-
-  }
-}
+     this.bookservice.addbook(this.bookform.value).subscribe(response => {
+        this.processing = false;
 
 
+        console.log("erree",this.bookform.value)
+        this.router.navigate(['/book/list']);
 
+     }
 
+     );
 
-
-
-
-
-
+   //   this.router.navigate(['/masters/projects/businesslist']);
 
 }
 
-
-
+}
+}
 

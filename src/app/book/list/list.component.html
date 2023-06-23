@@ -10,6 +10,19 @@
         </span>
       </nav></nav></div>
       <div style="text-align: center;margin-bottom: 60px;" >
+
+        <span class="p-input-icon-left mb-2">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            #filter
+            (input)="onGlobalFilter(dt1, $event)"
+            placeholder="Search Applicants"
+            class="w-full"
+          />
+          </span>
+
         <button
         pButton
         label="Add New Rule"
@@ -20,15 +33,26 @@
 
 
     </div>
-      <p-table [value]="bookarray" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}" >
+    <p-table [value]="bookarray" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}" [sortMode]="'multiple'" (sort)="onSort($event)" 
+    [paginator]="true" [rows]="10" #dt1 [globalFilterFields]="['title', 'description']">
+     
+      
         <ng-template pTemplate="header">
         <tr >
-         
-          <th scope="col">title</th>
-          <th scope="col">description</th>
-          <th scope="col">pageCount</th>
-          <th scope="col">publishDate</th>
-          <th scope="col">Action</th>
+    
+          <th [pSortableColumn]="'title'">Title
+            <p-sortIcon [field]="'title'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'description'">Description
+            <p-sortIcon [field]="'description'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'pageCount'">Page Count
+            <p-sortIcon [field]="'pageCount'"></p-sortIcon>
+          </th>
+          <th [pSortableColumn]="'publishDate'">Publish Date
+            <p-sortIcon [field]="'publishDate'"></p-sortIcon>
+          </th>
+          <th>Action</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-data >
@@ -44,7 +68,8 @@
                 label="Edit"
                 class="p-button- mb-2"
                 icon="pi pi-plus"
-                (click)="create()"
+                (click)="edit(data.id)"
+
               ></button>
               <button
               pButton

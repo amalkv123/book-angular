@@ -12,14 +12,33 @@ export class BookService {
   getbook(){
     return this.http.get<any>('https://fakerestapi.azurewebsites.net/api/v1/Books ')
   }
-  // deletebook(key: any){
-  //   return this.http.delete('https://fakerestapi.azurewebsites.net/api/v1/Books/{pass-key} ')
-  // }
 
+  
+
+  addbook(data: any){
+    const url = "https://fakerestapi.azurewebsites.net/api/v1/Books"
+    return this.http.post<any>(url, data)
+  }
 
   deletebook(key: any) {
     const url = `https://fakerestapi.azurewebsites.net/api/v1/Books/`+key;
     return this.http.delete<Response>(url);
    
   }
-}
+
+  getbooks(key:any){
+    const url = `https://fakerestapi.azurewebsites.net/api/v1/Books/`+key;
+    return this.http.get<any>(url);
+
+  }
+  updatebook(data: any,key:any){
+    console.log("api")
+    const url = 'https://fakerestapi.azurewebsites.net/api/v1/Books/'+key;
+    return this.http.put<any>(url,data)
+
+  }
+
+
+  }
+
+
