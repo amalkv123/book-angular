@@ -27,13 +27,9 @@
             <input type="text" pInputText formControlName="title" [ngClass]="{
                 'ng-invalid ng-dirty': submitted && f['title'].errors
               }">
-              <ng-container *ngIf="f['title'].errors.required">
-                This field is required
-              </ng-container>
-              <ng-container *ngIf="f.get('title')?.errors?.maxlength">
-                Title should not exceed 30 characters
-              </ng-container>
-
+              <span *ngIf="submitted && f['title'].errors">
+                <p class="p-error mt-2">This field is required</p>
+            </span>
              
   
           </div>
