@@ -22,30 +22,16 @@ export class CreateComponent {
    excerpt:any
    date!: Date; 
    bookform!:FormGroup
-
-
-
-
-
-
-
-  processing = false;
+   processing = false;
    title_btn_state = "Add";
-   businessForm!: FormGroup;
-   clients_list: any[] = [];
    submitted: boolean = false;
    form_data: any = {};      
    id = "";
    isAddMode: boolean = true;
-   client_count: any = 0;
-
-   dropdownCountry = [];
 
 
-   items: MenuItem[] = [];
-   home!: MenuItem;
+ 
 
-   dropdownPartner: any = [];
 
 
    constructor(
@@ -73,7 +59,6 @@ export class CreateComponent {
 
   });
 
-  // Set 'isAddMode' variable to true or false if id is present.
   this.id = this.route.snapshot.params["id"];
   console.log('idddd: ', this.id)
   this.isAddMode = !this.id;
@@ -101,12 +86,11 @@ export class CreateComponent {
         })
      ).subscribe();
 
-     this.items.push();
+     
      this.title_btn_state = "Update";
 
   } else {
      this.title_btn_state = "Add";
-     this.items.push();
   }
 }
 
@@ -124,7 +108,6 @@ get f() {
 
 
 
-// Calls addClient or updateClient API based on the form.
 createbook() {
 
   this.processing = true;
@@ -141,8 +124,7 @@ createbook() {
 
 
   if (this.bookform.get('id')?.value != null ) {
-
-        this.bookservice.updatebook(this.bookform.value,this.id).subscribe(response => {
+         this.bookservice.updatebook(this.bookform.value,this.id).subscribe(response => {
          this.router.navigate(['/book/list']);
 
 
@@ -158,19 +140,21 @@ createbook() {
 
      this.bookservice.addbook(this.bookform.value).subscribe(response => {
         this.processing = false;
-
-
-        console.log("erree",this.bookform.value)
+         console.log("erree",this.bookform.value)
         this.router.navigate(['/book/list']);
 
      }
 
      );
 
-   //   this.router.navigate(['/masters/projects/businesslist']);
 
 }
 
 }
+
+
+cancel2(){
+   this.router.navigate(['/book/list']);
 }
 
+}
