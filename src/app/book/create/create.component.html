@@ -1,137 +1,93 @@
+
+
 <div class="col-12 main-container">
+  <div class="card">
+    <div>
+      <h1 class="book-title mt-4"> Add/Edit Book Details</h1>
+    </div>
 
-    <div class="card">
-  
-      <div>
-  
-        <h1 class="book-title mt-4"> Add/Edit Book Details</h1>
-  
-      </div>
-  
-  
-  
-  
-      <div class="name-container  p-fluid">
-  
-        <form [formGroup]="bookform">
+    <div class="name-container  p-fluid col-12">
+      <form [formGroup]="bookform">
 
-  
-  
-        <div class="col-6 mt-3">
-  
-          <div class=" flex flex col md:col-4 me-3 mb-4 ">
-
-
-            <label htmlFor="title">Title</label>
-  
-            <input type="text" pInputText formControlName="title" [ngClass]="{
-                'ng-invalid ng-dirty': submitted && f['title'].errors
-              }">
+        
+          
+          <div class="col-6 mt-3">
+            <div class=" flex flex col md:col-4 me-3 mb-4 ">
+              <label htmlFor="title">Title</label>
+              <input type="text" pInputText formControlName="title" [ngClass]="{
+                  'ng-invalid ng-dirty': submitted && f['title'].errors
+                }">
               <span *ngIf="submitted && f['title'].errors">
                 <p class="p-error mt-2">This field is required</p>
-            </span>
-             
+              </span>
+            </div>
   
-          </div>
+            <div class="gap-2 flex col md:col-4 me-3">
+              <label htmlFor="description">Description</label>
+              <textarea rows="5" cols="30" pInputTextarea formControlName="description" [ngClass]="{
+                  'ng-invalid ng-dirty': submitted && f['description'].errors
+              }"></textarea>
   
-  
-  
-  
-          <div class="gap-2 flex col md:col-4 me-3">
-  
-            <label htmlFor="description">Description</label>
-  
-            <textarea rows="5" cols="30" pInputTextarea formControlName="description" [ngClass]="{
-                'ng-invalid ng-dirty': submitted && f['description'].errors
-              }">
-             
-              </textarea>
               <span *ngIf="submitted && f['description'].errors">
                 <p class="p-error mt-2">This field is required</p>
-            </span>
-  
+              </span>
+            </div>
           </div>
-  
-        </div>
-  
-        <div class="col-6 mt-3">
-  
+
+         
+
+         
+       
+
+        <div class="col-6 ">
           
-  
+          
           <div class=" flex col md:col-4 ">
-  
             <label for="pagecount">Page Count</label>
-  
             <p-inputNumber inputId="pagecount" formControlName="pagecount" [ngClass]="{
-                'ng-invalid ng-dirty': submitted && f['pagecount'].errors
-              }"> </p-inputNumber>
-
-              <span *ngIf="submitted && f['pagecount'].errors">
-                <p class="p-error mt-2">This field is required</p>
+                'ng-invalid ng-dirty': submitted && f['pagecount'].errors}"> </p-inputNumber>
+            <span *ngIf="submitted && f['pagecount'].errors">
+              <p class="p-error mt-2">This field is required</p>
             </span>
-              
-  
           </div>
-  
-  
-  
-  
+
           <div class=" flex flex col md:col-4  mt-4 ">
-  
             <label htmlFor="excerpt">Excerpt</label>
-  
             <input type="text" pInputText formControlName="excerpt" [ngClass]="{
-                'ng-invalid ng-dirty': submitted && f['excerpt'].errors
-              }">
-
-              <span *ngIf="submitted && f['excerpt'].errors">
-                <p class="p-error mt-2">This field is required</p>
+                'ng-invalid ng-dirty': submitted && f['excerpt'].errors}">
+            <span *ngIf="submitted && f['excerpt'].errors">
+              <p class="p-error mt-2">This field is required</p>
             </span>
-  
           </div>
-  
-  
-  
-  
+
           <div class=" flex flex col md:col-4  mt-4 ">
-  
             <label htmlFor="publishDate">Publish Date</label>
-  
             <p-calendar formControlName="date" [ngClass]="{
                 'ng-invalid ng-dirty': submitted && f['date'].errors
-              }"dateFormat="yy-mm-dd'T'HH:MM:ss.l'Z'"></p-calendar>
-              <span *ngIf="submitted && f['date'].errors">
-                <p class="p-error mt-2">This field is required</p>
+              }" dateFormat="yy-mm-dd'T'HH:MM:ss.l'Z'"></p-calendar>
+            <span *ngIf="submitted && f['date'].errors">
+              <p class="p-error mt-2">This field is required</p>
             </span>
-  
           </div>
-  
+
+         
         </div>
-  
-  
-  
-  
-      
-  
-        </form>
-  
-  
-      </div>
-  
-  
-  
-  
-      <div class="col-12  btn-container">
-  
-        <p-button label="Create" styleClass="p-button-raised" class="me-3" (click)="createbook()" label={{title_btn_state}}></p-button>
-  
-        <p-button label="Cancel" styleClass="p-button-raised p-button-warning" class="me-3" ></p-button>
-  
-      </div>
-  
+
+      </form>
     </div>
-  
-  
-  
-  
+
+    <div class="col-12  btn-container">
+      <p-button label="Create" styleClass="p-button-raised" class="me-3" (click)="createbook()"
+        label={{title_btn_state}}></p-button>
+      <p-button label="Cancel" styleClass="p-button-raised p-button-warning" class="me-3"></p-button>
+    </div>
+
   </div>
+</div>
+
+
+
+
+
+
+
