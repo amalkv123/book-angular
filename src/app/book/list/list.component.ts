@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { BookService } from 'src/app/book.service';
 import { Subject } from 'rxjs';
 import { Router,ActivatedRoute } from '@angular/router';
 import { Table } from 'primeng/table';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent {
+export class ListComponent implements OnDestroy {
   constructor(private bookserve:BookService,
               private route:ActivatedRoute,
               private router: Router,
@@ -17,24 +18,30 @@ export class ListComponent {
     bookarray:any=[]
     book_list: any[] = [];
     claims: any[] = [];
-
+    booksubscribe=new Subscription
     
     ngOnInit(){
 
      
-      this.bookserve.getbook().subscribe((res)=>{
+      this.booksubscribe.add(this.bookserve.getbook().subscribe((res)=>{
         console.log({res})
         this.bookarray=res
         console.log("ab",this.bookarray)
 
       }
-      );
+      ))
     };
+    
+    ngOnDestroy(){
+      this.booksubscribe.unsubscribe()
+      console.log("vdhg")
+    }
 
     create(){
       this.router.navigate(["book/create"]);
 
     }
+
 
     deletedata(key:any){
       this.bookserve.deletebook(key).subscribe((res)=>{
@@ -42,9 +49,11 @@ export class ListComponent {
       })   
       }
 
+    
+
 
       edit(key:any){
-        this.router.navigate(["book/edit/"+key])
+        this.router.navigateByUrl("book/edit/",{state:{data:key}});
         console.log("response")
       }
 
@@ -52,6 +61,8 @@ export class ListComponent {
 	onGlobalFilter(table: Table, event: Event) {
 		table.filterGlobal((event.target as HTMLInputElement).value, "contains");
 	}
+
+
   onSort(event: any) {
     const { field, order } = event;
     if (field) {

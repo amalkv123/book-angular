@@ -35,7 +35,7 @@
 
     </div>
     <p-table [value]="bookarray" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}" [sortMode]="'multiple'" (sort)="onSort($event)" 
-    [paginator]="true" [rows]="10" #dt1 [globalFilterFields]="['title', 'description']">
+    [paginator]="true" [rows]="10" #dt1 [globalFilterFields]="['title', 'description','pageCount','publishDate']">
      
       
         <ng-template pTemplate="header">

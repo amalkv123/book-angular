@@ -13,24 +13,19 @@ import { TreeTableModule } from 'primeng/treetable';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
-
-
-
 import { InputTextModule } from 'primeng/inputtext';
-
-
-
 import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import { InputNumberModule } from 'primeng/inputnumber';
 
 import { CalendarModule } from 'primeng/calendar';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     BookComponent,
     ListComponent,
-    CreateComponent
+    CreateComponent,
   ],
   imports: [
     CommonModule,
@@ -45,7 +40,8 @@ import { CalendarModule } from 'primeng/calendar';
     InputTextModule,
     InputTextareaModule,
     InputNumberModule,
-    CalendarModule
+    CalendarModule,
+    RouterModule
   ]
 })
 export class BookModule { }

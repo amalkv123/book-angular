@@ -1,11 +1,11 @@
 import { Component,OnInit } from '@angular/core';
 import { map } from "rxjs/operators";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 
 import { Router, ActivatedRoute } from "@angular/router";
 import {  MenuItem,  } from "primeng/api";
 import { BookService } from 'src/app/book.service';
-
+import {trim} from 'lodash'
 
 @Component({
   selector: 'app-create',
@@ -30,7 +30,7 @@ export class CreateComponent {
    isAddMode: boolean = true;
 
 
- 
+   
 
 
 
@@ -41,7 +41,10 @@ export class CreateComponent {
     private bookservice:BookService
    
 
- ) { }
+ ) { 
+   this.id=this.router.getCurrentNavigation()?.extras.state?.['data']
+   console.log("id by url",this.id)
+ }
 
 
  ngOnInit(): void {
@@ -49,20 +52,20 @@ export class CreateComponent {
 
 
   this.bookform = this.formBuilder.group({
-     id: [null],
-     title: [null, Validators.required],
-     description: [null, Validators.required],
-     pagecount: [null, Validators.required],
-     excerpt: [null, Validators.required],
-     date: [null, Validators.required],
-
+   // id:[null],
+   title: [null, [Validators.required, Validators.maxLength(30)]],
+   description: [null, [Validators.required, Validators.maxLength(50)]],
+   pageCount: [null, [Validators.required, Validators.min(10), Validators.max(250)]],  
+   excerpt: [null, Validators.maxLength(250)],   
+   publishDate: [null, [Validators.required, this.validateDate]]
 
   });
 
-  this.id = this.route.snapshot.params["id"];
-  console.log('idddd: ', this.id)
-  this.isAddMode = !this.id;
+//   this.id = this.route.snapshot.params["id"];
+//   console.log('idddd: ', this.id)
 
+  this.isAddMode = !this.id;
+console.log("aaradhya",this.isAddMode)
 
 
   if (!this.isAddMode) {
@@ -73,20 +76,20 @@ export class CreateComponent {
 
      this.bookservice.getbooks(this.id).pipe(
         map((resp: any) => {
-           this.form_data.id = resp.id;
+         //   this.form_data.id = resp.id;
            this.form_data.title = resp.title;
-           this.form_data.description = resp.description;
+           this.form_data.description = resp.description
            this.form_data.excerpt = resp.excerpt;
-           this.form_data.pagecount = resp.pageCount;
-           this.form_data.date = new Date (resp.publishDate);
+           this.form_data.pageCount = resp.pageCount;
+           this.form_data.publishDate = new Date (resp.publishDate);
 
            this.bookform.patchValue(this.form_data);
 
            this.submitted = true;
+           console.log("id man",this.form_data.id)
         })
      ).subscribe();
 
-     
      this.title_btn_state = "Update";
 
   } else {
@@ -113,36 +116,29 @@ createbook() {
   this.processing = true;
   this.submitted = true;
 
+
+  this.bookform.controls['title'].setValue(trim(this.bookform.controls['title'].value))
+  this.bookform.controls['description'].setValue(trim(this.bookform.controls['description'].value))
+  this.bookform.controls['excerpt'].setValue(trim(this.bookform.controls['excerpt'].value))
+
   if (this.bookform.invalid) {
      this.processing = false;
      return;
   }
 
-
-
-
-
-
-  if (this.bookform.get('id')?.value != null ) {
+  if (this.id != null ) {
          this.bookservice.updatebook(this.bookform.value,this.id).subscribe(response => {
          this.router.navigate(['/book/list']);
-
-
         });
-
      
   }
 
-
   else {
-
-
 
      this.bookservice.addbook(this.bookform.value).subscribe(response => {
         this.processing = false;
          console.log("erree",this.bookform.value)
         this.router.navigate(['/book/list']);
-
      }
 
      );
@@ -156,5 +152,24 @@ createbook() {
 cancel2(){
    this.router.navigate(['/book/list']);
 }
+
+validateDate(control: AbstractControl): ValidationErrors | null {
+
+   const selectedDate: Date = control.value;
+
+   const currentDate: Date = new Date();
+
+
+
+
+   if (selectedDate > currentDate) {
+
+     return { futureDate: true };
+
+   }
+
+   return null;
+
+ }
 
 }

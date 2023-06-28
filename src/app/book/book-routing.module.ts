@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { BookComponent } from './book.component';
 import { ListComponent } from './list/list.component';
 import { CreateComponent } from './create/create.component';
-
 const routes: Routes = [
   {
   path:'',component:BookComponent,children:[
@@ -13,6 +12,7 @@ const routes: Routes = [
   {path:"list",component:ListComponent},
   {path:"create",component:CreateComponent},
   {path:"edit/:id",component:CreateComponent},
+  
 
   
 
